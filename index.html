@@ -72,12 +72,43 @@
             text-shadow: 0 0 10px var(--purple);
         }
 
-        .glitch {
+        .header-container {
             position: relative;
-            font-size: 4em;
+            min-height: 100px;
+            margin-bottom: 20px;
+            transition: min-height 0.3s ease;
+        }
+
+        .typewriter, .glitch {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            font-size: 2.5em;
             letter-spacing: 0.1em;
+        }
+
+        .typewriter {
+            color: var(--accent);
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            overflow: hidden;
+        }
+
+        .typewriter::after {
+            content: '|';
+            animation: blink 0.7s step-end infinite;
+        }
+
+        .glitch {
+            opacity: 0;
             animation: glitch 1s linear infinite;
             color: var(--accent);
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
         }
 
         @keyframes glitch {
@@ -141,6 +172,7 @@
             border: 1px solid var(--comment);
             margin-top: 20px;
             box-shadow: 0 0 20px var(--comment);
+            transition: margin-top 0.3s ease;
         }
 
         .cursor {
@@ -152,11 +184,6 @@
             background-color: var(--green);
             animation: blink 1s step-end infinite;
             z-index: 1;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
         }
 
         .terminal {
@@ -177,16 +204,6 @@
             animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
         }
 
-        @keyframes typing {
-            from { width: 0 }
-            to { width: 100% }
-        }
-
-        @keyframes blink-caret {
-            from, to { border-color: transparent }
-            50% { border-color: var(--green); }
-        }
-
         @media (max-width: 768px) {
             .container {
                 width: 95%;
@@ -197,8 +214,8 @@
                 margin-bottom: 10px;
             }
 
-            .glitch {
-                font-size: 2em;
+            .typewriter, .glitch {
+                font-size: 1.5em;
             }
 
             .cursor {
@@ -223,8 +240,11 @@
     </header>
 
     <main class="container">
-        <h1 class="glitch" title="RGV TECH">RGV TECH</h1>
-        <div class="content">
+        <div class="header-container" id="headerContainer">
+            <h1 class="typewriter" id="typewriter"></h1>
+            <h1 class="glitch" id="glitch" title="RGV TECH">RGV TECH</h1>
+        </div>
+        <div class="content" id="content">
             <h2>Welcome, Hackers!</h2>
             <p>RGV TECH: Where Tinkerers, Enthusiasts, Coders, and Hackers unite in the Rio Grande Valley.</p>
             <p>Explore. Create. Hack. Join us in shaping the future of technology.</p>
@@ -235,31 +255,78 @@
     </main>
 
     <script>
+        const typewriterElement = document.getElementById('typewriter');
+        const glitchElement = document.getElementById('glitch');
+        const headerContainer = document.getElementById('headerContainer');
+        const content = document.getElementById('content');
+        const fullText = "RGV Tinkerers,\nEnthusiasts,\nCoders, and\nHackers";
+        let i = 0;
+        let animationComplete = false;
+
+        function adjustContentPosition() {
+            if (!animationComplete) {
+                const headerHeight = headerContainer.offsetHeight;
+                content.style.marginTop = `${headerHeight + 20}px`;
+            } else {
+                finalizeContentPosition();
+            }
+        }
+
+        function finalizeContentPosition() {
+            const glitchHeight = glitchElement.offsetHeight;
+            content.style.marginTop = `${glitchHeight + 20}px`;
+        }
+
+        function typeWriter() {
+            if (i < fullText.length) {
+                typewriterElement.textContent += fullText.charAt(i);
+                i++;
+                
+                headerContainer.style.minHeight = `${typewriterElement.offsetHeight}px`;
+                adjustContentPosition();
+                
+                setTimeout(typeWriter, 50);
+            } else {
+                setTimeout(() => {
+                    typewriterElement.style.animation = 'none';
+                    typewriterElement.style.opacity = '0';
+                    glitchElement.style.opacity = '1';
+                    
+                    animationComplete = true;
+                    headerContainer.style.minHeight = `${glitchElement.offsetHeight}px`;
+                    finalizeContentPosition();
+                }, 1000);
+            }
+        }
+
+        // Initial positioning
+        adjustContentPosition();
+        typeWriter();
+
         // Glitch effect restart on mouseover
-        document.addEventListener('DOMContentLoaded', (event) => {
-            const glitchElement = document.querySelector('.glitch');
-            
-            glitchElement.addEventListener('mouseover', () => {
-                glitchElement.style.animation = 'none';
-                void glitchElement.offsetWidth; // Trigger reflow
-                glitchElement.style.animation = null;
-            });
+        glitchElement.addEventListener('mouseover', () => {
+            glitchElement.style.animation = 'none';
+            void glitchElement.offsetWidth; // Trigger reflow
+            glitchElement.style.animation = null;
         });
 
         // Terminal typing effect
         const terminalText = document.getElementById('terminalText');
         const text = "Initializing RGV TECH systems... Access granted. Welcome, hacker.";
-        let i = 0;
+        let j = 0;
 
-        function typeWriter() {
-            if (i < text.length) {
-                terminalText.innerHTML += text.charAt(i);
-                i++;
-                setTimeout(typeWriter, 50);
+        function typeTerminal() {
+            if (j < text.length) {
+                terminalText.innerHTML += text.charAt(j);
+                j++;
+                setTimeout(typeTerminal, 50);
             }
         }
 
-        typeWriter();
+        typeTerminal();
+
+        // Adjust content position on window resize
+        window.addEventListener('resize', adjustContentPosition);
     </script>
 </body>
 </html>
