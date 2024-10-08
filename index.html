@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RGV TECH - Home</title>
+    <style>
+        :root {
+            --background: #1a1b26;
+            --foreground: #a9b1d6;
+            --comment: #565f89;
+            --accent: #7aa2f7;
+            --red: #f7768e;
+            --green: #9ece6a;
+            --yellow: #e0af68;
+            --blue: #7aa2f7;
+            --purple: #bb9af7;
+            --cyan: #7dcfff;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: var(--background);
+            color: var(--foreground);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            background-color: rgba(26, 27, 38, 0.8);
+            padding: 20px 0;
+            position: relative;
+            z-index: 2;
+            border-bottom: 1px solid var(--comment);
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            color: var(--cyan);
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: var(--yellow);
+            text-shadow: 0 0 10px var(--yellow);
+        }
+
+        h1, h2 {
+            font-family: 'Courier New', monospace;
+            color: var(--purple);
+            text-shadow: 0 0 10px var(--purple);
+        }
+
+        .glitch {
+            position: relative;
+            font-size: 4em;
+            letter-spacing: 0.1em;
+            animation: glitch 1s linear infinite;
+            color: var(--accent);
+        }
+
+        @keyframes glitch {
+            2%, 64% {
+                transform: translate(2px,0) skew(0deg);
+            }
+            4%, 60% {
+                transform: translate(-2px,0) skew(0deg);
+            }
+            62% {
+                transform: translate(0,0) skew(5deg); 
+            }
+        }
+
+        .glitch:before,
+        .glitch:after {
+            content: attr(title);
+            position: absolute;
+            left: 0;
+        }
+
+        .glitch:before {
+            animation: glitchTop 1s linear infinite;
+            clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
+            -webkit-clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
+        }
+
+        @keyframes glitchTop {
+            2%, 64% {
+                transform: translate(2px,-2px);
+            }
+            4%, 60% {
+                transform: translate(-2px,2px);
+            }
+            62% {
+                transform: translate(13px,-1px) skew(-13deg); 
+            }
+        }
+
+        .glitch:after {
+            animation: glitchBotom 1.5s linear infinite;
+            clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%);
+            -webkit-clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%);
+        }
+
+        @keyframes glitchBotom {
+            2%, 64% {
+                transform: translate(-2px,0);
+            }
+            4%, 60% {
+                transform: translate(-2px,0);
+            }
+            62% {
+                transform: translate(-22px,5px) skew(21deg); 
+            }
+        }
+
+        .content {
+            background-color: rgba(26, 27, 38, 0.6);
+            padding: 20px;
+            border: 1px solid var(--comment);
+            margin-top: 20px;
+            box-shadow: 0 0 20px var(--comment);
+        }
+
+        .cursor {
+            position: fixed;
+            top: 70px;
+            left: 20px;
+            width: 10px;
+            height: 20px;
+            background-color: var(--green);
+            animation: blink 1s step-end infinite;
+            z-index: 1;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .terminal {
+            border: 2px solid var(--green);
+            padding: 20px;
+            margin-top: 20px;
+            background-color: rgba(26, 27, 38, 0.8);
+        }
+
+        .terminal-text {
+            color: var(--green);
+            font-family: 'Courier New', monospace;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: .15em solid var(--green);
+            margin: 0 auto;
+            letter-spacing: .15em;
+            animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--green); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+            }
+            
+            nav ul li {
+                display: block;
+                margin-bottom: 10px;
+            }
+
+            .glitch {
+                font-size: 2em;
+            }
+
+            .cursor {
+                top: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cursor"></div>
+    
+    <header>
+        <div class="container">
+            <nav>
+                <ul>
+                    <li><a href="#" class="active">Home</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Events</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <h1 class="glitch" title="RGV TECH">RGV TECH</h1>
+        <div class="content">
+            <h2>Welcome, Hackers!</h2>
+            <p>RGV TECH: Where Tinkerers, Enthusiasts, Coders, and Hackers unite in the Rio Grande Valley.</p>
+            <p>Explore. Create. Hack. Join us in shaping the future of technology.</p>
+        </div>
+        <div class="terminal">
+            <p class="terminal-text" id="terminalText"></p>
+        </div>
+    </main>
+
+    <script>
+        // Glitch effect restart on mouseover
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const glitchElement = document.querySelector('.glitch');
+            
+            glitchElement.addEventListener('mouseover', () => {
+                glitchElement.style.animation = 'none';
+                void glitchElement.offsetWidth; // Trigger reflow
+                glitchElement.style.animation = null;
+            });
+        });
+
+        // Terminal typing effect
+        const terminalText = document.getElementById('terminalText');
+        const text = "Initializing RGV TECH systems... Access granted. Welcome, hacker.";
+        let i = 0;
+
+        function typeWriter() {
+            if (i < text.length) {
+                terminalText.innerHTML += text.charAt(i);
+                i++;
+                setTimeout(typeWriter, 50);
+            }
+        }
+
+        typeWriter();
+    </script>
+</body>
+</html>
